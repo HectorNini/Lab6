@@ -2,6 +2,9 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+
+
 
 namespace Lab6
 {
@@ -41,6 +44,11 @@ namespace Lab6
         [Test]
         public void Test1()
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
+
+
+
+
             //Проверка перехода на страницу истории изменений
             Thread.Sleep(delay);
             var currentButton = driver.FindElement(_historyButton);
@@ -67,7 +75,7 @@ namespace Lab6
             currentButton.Click();
 
             //Развернуть и свернуть описание
-            Thread.Sleep(delay);
+            wait.Until(driver => driver.FindElement(_infoItemCricket).Displayed);
             currentButton = driver.FindElement(_infoItemCricket);
             currentButton.Click();
             Thread.Sleep(delay);
@@ -100,7 +108,7 @@ namespace Lab6
             currentButton = driver.FindElement(_filterButton);
             currentButton.Click();
 
-            Thread.Sleep(delay);
+            wait.Until(driver => driver.FindElement(_hiddenFilterSetting).Displayed);
             currentButton = driver.FindElement(_hiddenFilterSetting);
             currentButton.Click();
 
@@ -113,7 +121,7 @@ namespace Lab6
             currentButton.Click();
 
             searchField.SendKeys("Мама");
-            Thread.Sleep(delay);
+            wait.Until(driver => !driver.FindElement(_hiddenFilterSetting).Displayed);
             Assert.That(item.Displayed, Is.False);
 
 
